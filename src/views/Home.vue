@@ -1,6 +1,12 @@
 <template>
-  <ItunesSearch />
-  <ItunesAlbums />
+  <div>
+    <div class="search-section">
+      <ItunesSearch />
+    </div>
+    <div class="albums">
+      <ItunesAlbums />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,3 +22,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.search-section {
+  padding: 10px;
+}
+
+.albums {
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+}
+</style>

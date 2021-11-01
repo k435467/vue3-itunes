@@ -5,6 +5,7 @@
       layout="prev, pager, next"
       :page-count="totalPages"
       v-model:currentPage="curPage"
+      class="pagination-container"
     ></el-pagination>
     <div v-for="album in curAlbums" :key="album.collectionId">
       <a :href="album.collectionViewUrl" target="_blank">
@@ -17,7 +18,7 @@
             ></el-image>
           </div>
           <div>
-            <div class="sec-text pb-2 pt-2">{{ album.collectionType }}</div>
+            <div class="sec-text py-2">{{ album.collectionType }}</div>
             <div class="black-text">{{ album.collectionName }}</div>
             <div class="sec-text">{{ album.artistName }}</div>
             <div class="sec-text pt-4">
@@ -34,6 +35,7 @@
       layout="prev, pager, next"
       :page-count="totalPages"
       v-model:currentPage="curPage"
+      class="pagination-container"
     ></el-pagination>
   </div>
 </template>
@@ -90,6 +92,12 @@ export default defineComponent({
   flex-direction: column;
 }
 
+.pagination-container {
+  width: fit-content;
+  align-self: center;
+  padding: 12px 0px;
+}
+
 .info-container {
   display: flex;
   padding: 10px;
@@ -113,8 +121,6 @@ export default defineComponent({
   padding-right: 30px;
   display: flex;
   align-items: center;
-  width: 140px;
-  height: 120px;
 }
 
 .black-text {
@@ -132,5 +138,13 @@ a:visited,
 a:active {
   color: inherit;
   text-decoration: none;
+}
+
+.py-2 {
+  padding: 8px 0px;
+}
+
+.pt-4 {
+  padding-top: 16px;
 }
 </style>
