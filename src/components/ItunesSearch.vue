@@ -6,13 +6,16 @@
       class="search-input ma"
       @keyup="pressEnter"
     />
-    <el-button type="info" plain class="ma" @click="clickSearch">Search</el-button>
+    <el-button type="info" plain class="ma" @click="clickSearch" :loading="loading"
+      >Search</el-button
+    >
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "@/store/index";
 
 export default defineComponent({
   name: "ItunesSearch",
@@ -33,7 +36,12 @@ export default defineComponent({
       }
     };
 
-    return { searchKeyword, clickSearch, pressEnter };
+    const store = useStore();
+    const loading = computed(() => {
+      return store.state.loading;
+    });
+
+    return { searchKeyword, clickSearch, pressEnter, loading };
   },
 });
 </script>

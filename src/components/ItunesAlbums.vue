@@ -43,10 +43,10 @@
 <script lang="ts">
 import { IItunesSearchRes, IItunesSearchResult } from "@/lib/IItunesSearchRes";
 import { itunesSearch } from "@/lib/iTunesAPI";
-import { computed, defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
-const pageSize = 10;
+import { useStore } from "@/store/index";
+import usePaginationRepo from "@/composables/usePaginationRepo";
 
 export default defineComponent({
   name: "ItunesAlbums",
@@ -54,28 +54,22 @@ export default defineComponent({
     const route = useRoute();
     const searchKeyword = ref(route.query.searchKeyword as string);
     const albums = ref<IItunesSearchResult[]>([]);
-    const curPage = ref(1);
+    const store = useStore();
 
     const fetchData = async () => {
       if (searchKeyword.value) {
+        store.commit("setLoading", true);
         const tmp: IItunesSearchRes = await itunesSearch(searchKeyword.value);
         albums.value = tmp.results ?? [];
+        store.commit("setLoading", false);
       }
     };
 
     fetchData(); // fetch data on created
 
-    const showPagination = computed(() => albums.value.length > pageSize);
-    const totalPages = computed(() => Math.ceil(albums.value.length / pageSize));
-    const curAlbums = computed(() =>
-      albums.value.slice(
-        (curPage.value - 1) * pageSize,
-        (curPage.value - 1) * pageSize + pageSize
-      )
-    );
+    const { curPage, showPagination, totalPages, curAlbums } = usePaginationRepo(albums);
 
     watch(route, (to) => {
-      console.log("enter watcher");
       searchKeyword.value = to.query.searchKeyword as string;
       curPage.value = 1;
       fetchData();
